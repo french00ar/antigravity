@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ya No Puedo Más - Neon Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --neon-green: #00ff88;
+      --urgency-red: #ff4444;
+      --urgency-orange: #ff8800;
+      --dark-green-gradient: linear-gradient(135deg, #0a2a0a, #0f3f0f);
+      --text-light: #f5f5f5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: var(--bg-dark); color: #fff; line-height: 1.6; padding-top: 70px; }
+    h1, h2, h3, h4, .montserrat { font-family: 'Montserrat', sans-serif; font-weight: 700; line-height: 1.2; }
+    .black-900 { font-weight: 900; }
+    a { text-decoration: none; color: inherit; }
+    .container { width: 90%; max-width: 1100px; margin: 0 auto; }
+    section { padding: 80px 0; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; padding: 16px 32px; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; font-weight: 900; border: none; }
+    .btn-green { background: var(--neon-green); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
+    .btn-outline-green { background: transparent; color: var(--neon-green); border: 2px solid var(--neon-green); }
+    .btn-red { background: var(--urgency-red); color: #fff; box-shadow: 0 4px 15px rgba(255,68,68,0.3); }
+    .btn-orange { background: var(--urgency-orange); color: #fff; box-shadow: 0 4px 15px rgba(255,136,0,0.3); }
+    .img-placeholder { background: #333; color: #888; border: 2px dashed #555; display: flex; align-items: center; justify-content: center; padding: 40px; border-radius: 8px; font-size: 0.9rem; text-align: center; }
+    
+    /* Global Section Backgrounds */
+    .bg-dark { background: var(--bg-dark); }
+    .bg-white { background: #fff; color: #121212; }
+    .bg-light { background: #f5f5f5; color: #121212; }
+    
+    /* 1. Header */
+    .fixed-header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(10,10,10,0.95); z-index: 1000; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .header-nav { display: flex; justify-content: space-between; align-items: center; width: 90%; max-width: 1100px; margin: 0 auto; }
+    .logo { color: var(--neon-green); font-size: 1.5rem; letter-spacing: -1px; }
+    
+    /* 2. Urgency Bar */
+    .top-urgency-bar { position: fixed; top: -100px; left: 0; right: 0; background: var(--urgency-red); padding: 12px; z-index: 999; display: flex; justify-content: center; align-items: center; gap: 20px; transition: top 0.4s ease; font-weight: bold; flex-wrap: wrap; text-align: center; }
+    .top-urgency-bar.visible { top: 70px; }
+    .timer { font-family: monospace; font-size: 1.5rem; background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 4px; }
+    
+    /* 3. Hook Bar */
+    .hook-bar { background: var(--bg-dark); border-top: 3px solid var(--neon-green); padding: 20px 0; text-align: center; font-size: 1.1rem; }
+    
+    /* 4. Hero */
+    .hero { background: var(--dark-green-gradient); text-align: center; }
+    .badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+    .badge { border: 1px solid rgba(0,255,136,0.5); padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 20px; }
+    .text-green { color: var(--neon-green); }
+    .text-red { color: var(--urgency-red); }
+    .hero-subtitle { font-size: 1.3rem; color: #aaa; margin-bottom: 40px; }
+    .hero .img-placeholder { max-width: 600px; margin: 40px auto 0; height: 300px; }
+    .trust-row { display: flex; justify-content: center; gap: 30px; margin-top: 30px; opacity: 0.7; }
+    
+    /* Grid system */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    
+    /* 5, 6, 9. General Cards */
+    .card-red { background: #fff; padding: 25px; border-radius: 8px; border-left: 5px solid var(--urgency-red); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .card-orange { background: #fafafa; padding: 20px; margin-bottom: 15px; border-radius: 8px; border-left: 5px solid var(--urgency-orange); }
+    .card-green { background: #fafafa; padding: 25px; border-radius: 8px; border-left: 5px solid var(--neon-green); }
+    
+    /* 7. Origin Story */
+    .story-box { border: 2px solid var(--neon-green); padding: 40px; border-radius: 12px; font-size: 1.1rem; background: rgba(0,255,136,0.05); margin: 0 auto; max-width: 800px; }
+    .story-box p { margin-bottom: 20px; }
+    
+    /* 8. Transformation */
+    .transformation { background: var(--dark-green-gradient); }
+    .trans-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 30px; align-items: center; }
+    .trans-box { padding: 40px; border-radius: 12px; text-align: center; }
+    .trans-red { background: rgba(255,68,68,0.1); border: 2px solid var(--urgency-red); }
+    .trans-green { background: rgba(0,255,136,0.1); border: 2px solid var(--neon-green); }
+    .arrow { font-size: 3rem; text-align: center; }
+    
+    /* 10, 14. Testimonials */
+    .test-card { background: #111; border: 1px solid rgba(0,255,136,0.2); border-radius: 12px; padding: 30px; margin-bottom: 20px; }
+    .test-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .avatar { width: 60px; height: 60px; border-radius: 50%; background: #333; }
+    .stars { color: gold; font-size: 1.2rem; }
+    .result-box { background: rgba(0,255,136,0.05); border: 1px solid var(--neon-green); padding: 15px; border-radius: 8px; color: var(--neon-green); margin-top: 15px; font-weight: bold; }
+    .test-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    
+    /* 11. Value Stack */
+    .value-stack { background: #111; text-align: center; }
+    .accordion { text-align: left; max-width: 800px; margin: 0 auto; }
+    .acc-item { margin-bottom: 10px; border: 1px solid #333; border-radius: 8px; background: #1a1a1a; }
+    .acc-header { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; }
+    .acc-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; background: #0f0f0f; }
+    .acc-content p { padding: 20px 0; color: #aaa; }
+    .total-bar { max-width: 800px; margin: 30px auto; background: var(--dark-green-gradient); padding: 20px; border-radius: 8px; border: 1px solid var(--neon-green); display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; }
+    .crossed-price { text-decoration: line-through; color: var(--urgency-red); font-size: 1.5rem; }
+    .big-price { font-size: 4rem; color: var(--neon-green); margin: 10px 0 20px; grid-column: 1 / -1; }
+    
+    /* 12. Bonuses */
+    .bonus-cards { background: #e8f5e9; color: #121212; }
+    .bonus-card { display: flex; background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .bonus-img { width: 30%; background: #ccc; min-height: 200px; }
+    .bonus-text { padding: 30px; width: 70%; }
+    
+    /* 13. Urgency Bonus Bar */
+    .urgency-bonus { background: linear-gradient(135deg, #2a0000, #400000); text-align: center; border-y: 3px solid var(--urgency-red); padding: 40px 0; }
+    
+    /* 15. Author */
+    .author-section { text-align: center; }
+    .author-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--neon-green); margin: 0 auto 20px; background: #eee; }
+    
+    /* 16. Emotional Urgency */
+    .cons-card { padding: 25px; border: 1px solid var(--urgency-red); background: rgba(255,0,0,0.05); border-radius: 8px; margin-bottom: 15px; }
+    
+    /* 17. FAQ */
+    .faq-item { border-left: 4px solid var(--neon-green); }
+    
+    /* 18. Final Close */
+    .final-box { max-width: 600px; margin: 0 auto; border: 2px dashed rgba(255,255,255,0.2); padding: 40px; border-radius: 12px; text-align: left; }
+    .checklist { list-style: none; margin-bottom: 30px; }
+    .checklist li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    
+    /* 19. Sticky Bottom CTA */
+    .sticky-cta { position: fixed; bottom: -100px; left: 0; right: 0; background: rgba(10,10,10,0.95); padding: 15px; text-align: center; z-index: 998; border-top: 1px solid rgba(0,255,136,0.2); transition: bottom 0.4s ease; display: flex; justify-content: center; align-items: center; gap: 20px; }
+    .sticky-cta.visible { bottom: 0; }
+    
+    /* Modal Exit Intent */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-content { background: #111; border: 2px solid var(--neon-green); padding: 40px; border-radius: 12px; max-width: 500px; text-align: center; position: relative; }
+    .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #fff; }
+
+    /* Spinner */
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,0.3); border-radius: 50%; border-top-color: #000; animation: spin 1s infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Utility */
+    .text-center { text-align: center; }
+    .bonus-card { overflow: hidden; word-break: break-word; }
+    .bonus-text { overflow: hidden; min-width: 0; }
+    img { max-width: 100%; height: auto; }
+    .mb-2 { margin-bottom: 20px; } .mb-4 { margin-bottom: 40px; } .mt-4 { margin-top: 40px; }
+
+    /* Animations */
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    .urgent-btn { animation: pulse 2s infinite; }
+
+    @media (max-width: 768px) {
+      .trans-grid { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); }
+      .bonus-card { flex-direction: column; }
+      .bonus-img, .bonus-text { width: 100%; }
+      .test-grid-2 { grid-template-columns: 1fr; }
+      .top-urgency-bar { top: -150px; font-size: 0.9rem; }
+      .top-urgency-bar.visible { top: 70px; }
+      .big-price { font-size: 3rem; }
+      header .btn { display: none; }
+    }
+  </style>
+  <script type="text/javascript">
+    function importHotmart(){
+      var imported = document.createElement('script');
+      imported.src = 'https://static.hotmart.com/checkout/widget.min.js';
+      document.head.appendChild(imported);
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css';
+      document.head.appendChild(link);
+    }
+    importHotmart();
+  </script>
+</head>
+<body>
+
+  <!-- 1. Fixed Header -->
+  <header class="fixed-header">
+    <div class="header-nav">
+      <div class="logo montserrat">NEON DIGITAL</div>
+      <a href="#checkout" class="btn btn-outline-green" style="padding: 8px 16px; font-size: 0.9rem;">🔒 Compra 100% Segura</a>
+    </div>
+  </header>
+
+  <!-- 2. Top Urgency Bar -->
+  <div class="top-urgency-bar">
+    <span>🔥 OFERTA LIMITADA: EL PRECIO SUBE EN:</span>
+    <span class="timer countdown-val">23:59:59</span>
+    <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+  </div>
+
+  <!-- 3. Hook Bar -->
+  <div class="hook-bar">
+    <div class="container">
+      Si llegaste buscando calmar tu <strong>ansiedad nocturna</strong>: estás en el lugar exacto. Esto te toma <strong>3 minutos</strong> de leer.
+    </div>
+  </div>
+
+  <!-- 4. Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="badges">
+        <div class="badge">⭐ +2.450 personas</div>
+        <div class="badge">⚡ Descarga inmediata</div>
+        <div class="badge">🛡️ Garantía 7 días</div>
+      </div>
+      <h1 class="black-900">Cuando la ansiedad no te suelta<br>ni de noche<br><span class="text-green">➔ recuperá tu paz mental<br>en 3 minutos.</span></h1>
+      <p class="hero-subtitle">Sin terapias largas. Sin procesos eternos. Sin que nadie lo sepa.<br>Un sistema para el momento exacto en que más lo necesitás.</p>
+      <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+      <div class="trust-row">
+        <span>⚡ Acceso inmediato al pago</span>
+        <span>🔒 Pago seguro Mercado Pago</span>
+        <span>🛡️ Garantía 7 días</span>
+      </div>
+      <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/Hero_Pack_Digital_Oferta_48Hs...webp?v=1773277243" alt="Pack Digital Ya No Puedo Más" class="mt-4" style="max-width:600px;width:100%;border-radius:12px;display:block;margin:40px auto 0;">
+    </div>
+  </section>
+
+  <!-- 5. Pain Section -->
+  <section class="pain-section bg-light">
+    <div class="container">
+      <h2 class="text-center mb-2" style="font-size: clamp(1.5rem, 4vw, 2.5rem)">Cumplís con todo. Trabajás. Sostenés a tu familia.</h2>
+      <h2 class="text-center mb-4 text-red" style="font-size: clamp(1.5rem, 4vw, 2.5rem)">Pero nadie sabe lo que cargás por dentro.</h2>
+      <p class="text-center" style="color:#aaa; font-style:italic; margin-bottom: 30px;">¿Cuántos de estos te suenan familiares?</p>
+      <div class="cards-grid">
+        <div class="card-red">🧠 Te vas a dormir pensando en las deudas, los pagos del mes, lo que falta. <strong>Tu cabeza hace cuentas a las 2AM que no te llevan a ningún lado.</strong></div>
+        <div class="card-red">🔋 Llegás a casa agotado y la familia te necesita, pero no tenés nada para dar. <strong>Estás presente físicamente, ausente por dentro.</strong> Y eso también te pesa.</div>
+        <div class="card-red">⏳ No sabés qué vas a hacer mañana para llegar a tu meta. <strong>La incertidumbre no te suelta.</strong> Querés tener el control pero se te escapa.</div>
+        <div class="card-red">😨 Tu cuerpo ya habla: el pelo se cae más, dormís mal, te despertás tenso. <strong>La ansiedad se instaló en tu cuerpo y no sabés cómo sacarla.</strong></div>
+        <div class="card-red">🫀 Por fuera "estás bien". Nadie sospecha. Pero por dentro estás al límite. <strong>Y lo peor es que no podés contárselo a nadie</strong> porque sos vos el que sostiene todo.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Physical Symptoms -->
+  <section class="physical-symptoms bg-white">
+    <div class="container">
+      <h2 class="text-center mb-1">La ansiedad no solo está en tu cabeza.<br>Ya está en tu cuerpo.</h2>
+      <p class="text-center mb-4" style="color:#aaa;">Estos son síntomas físicos directos de la ansiedad acumulada — no hipocondría, biología básica.</p>
+      <div style="max-width: 600px; margin: 0 auto; margin-bottom: 30px;">
+        <div class="card-orange"><strong>🔥 Pelo que se cae más de lo normal</strong><br>El cortisol elevado por ansiedad crónica interrumpe el ciclo de crecimiento del pelo. No es genética — es tu sistema nervioso en modo alerta permanente.</div>
+        <div class="card-orange"><strong>🔥 Mandíbula apretada al despertar</strong><br>Si te levantás con los dientes apretados o dolor en la nuca, tu cuerpo estuvo procesando tensión mientras dormías. El sueño no repara porque la mente no para.</div>
+        <div class="card-orange"><strong>🔥 Presión en el pecho sin razón médica</strong><br>Esa sensación de peso en el pecho es una respuesta física del sistema nervioso a la ansiedad sostenida. Tu cuerpo activa la alarma aunque no haya peligro real.</div>
+        <div class="card-orange"><strong>🔥 Dormís horas pero no descansás</strong><br>El cuerpo no entra en sueño profundo cuando el sistema nervioso está en alerta. Dormís 7 horas y te levantás como si no hubieras dormido. No es el colchón.</div>
+      </div>
+      <div class="text-center">
+        <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-orange urgent-btn" style="color:#fff;font-weight:900;text-decoration:none">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Origin Story -->
+  <section class="origin-story bg-dark">
+    <div class="container">
+      <div class="story-box text-center">
+        <h3 class="text-green mb-4">Gustavo Grageda</h3>
+        <p>Yo también fui ese hombre que cumple con todo por fuera y no puede apagar la cabeza por dentro. Trabajo, familia, deudas, incertidumbre — todo junto, todo el tiempo. <strong>Me acostaba agotado pero mi mente seguía haciendo cuentas a las 3AM.</strong></p>
+        <p>Probé terapias, pastillas para dormir, apps de meditación. Funcionaban cuando ya estaba tranquilo. Pero nadie tenía algo para el momento exacto de crisis — <strong>cuando no tenés energía, no tenés paciencia, y lo único que querés es que pare.</strong></p>
+        <p>Lo que descubrí es que el problema no era yo. Era que todas las soluciones estaban diseñadas para personas con tiempo y calma. <strong>No para alguien que sostiene el peso de todo y necesita una herramienta que funcione ahora.</strong></p>
+        <p style="color:var(--neon-green); font-weight:700;">Así armé este sistema. No desde un consultorio — desde las mismas noches que vos estás viviendo. El resultado: más de 2.450 personas ya lo usan. No porque sea teoría linda, sino porque funciona cuando más lo necesitás.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Transformation -->
+  <section class="transformation">
+    <div class="container">
+      <h2 class="text-center mb-4 text-white">De esto a esto. En 7 días.</h2>
+      <div class="trans-grid">
+        <div class="trans-box trans-red" style="text-align: left;">
+          <h3 class="text-red mb-4">TU VIDA AHORA</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li class="mb-2">❌ Deudas y problemas dando vueltas a las 3AM</li>
+            <li class="mb-2">❌ Llegás a casa y no tenés nada para dar</li>
+            <li class="mb-2">❌ La incertidumbre no te suelta</li>
+            <li class="mb-2">❌ Tu cuerpo acusa el golpe: pelo, tensión, mal sueño</li>
+            <li>❌ Cargás solo con todo — sin poder contárselo a nadie</li>
+          </ul>
+        </div>
+        <div class="arrow" style="color:var(--neon-green)">➔</div>
+        <div class="trans-box trans-green" style="text-align: left;">
+          <h3 class="text-green mb-4">TU VIDA CON EL SISTEMA</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li class="mb-2">✅ Herramienta para cortar el loop mental en 90 segundos</li>
+            <li class="mb-2">✅ Llegás con algo para dar — presencia real</li>
+            <li class="mb-2">✅ Calma ante la incertidumbre — sin necesitar certezas</li>
+            <li class="mb-2">✅ Sueño que repara, cuerpo que descansa</li>
+            <li>✅ Un sistema propio, silencioso, que nadie más necesita saber</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Differentiators -->
+  <section class="differentiators bg-white">
+    <div class="container">
+      <p class="text-center" style="font-size:12px; font-weight:900; letter-spacing:2px; color:#aaa; text-transform:uppercase;">Lo que lo hace diferente</p>
+      <h2 class="text-center" style="font-size: clamp(22px, 5vw, 34px); margin-bottom: 12px; color: #1a1a1a;">Por qué funciona cuando<br>todo lo demás no funcionó</h2>
+      <p class="text-center mb-4" style="color:#555">No es un curso para estudiar. Es una herramienta para usar ahora mismo.</p>
+      <div class="cards-grid">
+        <div class="card-green"><strong>⚡ Funciona en 3 minutos — no en semanas:</strong> No necesitás experiencia previa ni práctica. Abrís el Kit S.O.S., seguís los pasos y la ansiedad baja en segundos. Diseñado para el peor momento, no para cuando ya estás tranquilo.</div>
+        <div class="card-green"><strong>🛡️ Sin terapia, sin turnos, sin esperar:</strong> Una sesión de psicólogo en Argentina cuesta $30,000+ y tardás semanas en ver resultados. Esto lo abrís hoy, lo usás esta noche y ya notás la diferencia.</div>
+        <div class="card-green"><strong>🧠 Diseñado para la crisis real — no para los momentos de calma:</strong> La mayoría de las técnicas funcionan cuando ya estás tranquilo. Este sistema fue creado específicamente para las 3AM, con el pecho apretado, sin energía, sin paciencia.</div>
+        <div class="card-green"><strong>📱 Siempre en tu celular — discreto, 24/7:</strong> Descarga digital inmediata. Nadie sabe que lo estás usando. Lo abrís en el baño, en el auto, antes de una reunión difícil. Sin turno, sin conexión necesaria.</div>
+        <div class="card-green"><strong>🌟 Probado por 2,450+ personas — no es teoría:</strong> Cada técnica fue testada con personas reales con problemas reales: trabajo, familia, deudas, incertidumbre. No es un PDF de consejos de Google.</div>
+        <div class="card-green"><strong>📈 Una sola vez, para siempre — sin suscripciones:</strong> Lo pagás una vez y es tuyo para siempre. Sin renovaciones. Cada vez que la ansiedad aparezca, el sistema está ahí.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. First Testimonials -->
+  <section class="testimonials-first bg-dark">
+    <div class="container">
+      <p class="text-center" style="font-size:12px; font-weight:900; letter-spacing:2px; color:var(--neon-green); text-transform:uppercase;">Lo que dicen quienes ya lo usan</p>
+      <h2 class="text-center">Personas reales. Resultados reales.</h2>
+      <p class="text-center mb-4" style="color:#555">Más de <strong style="color:#fff">2.450 personas</strong> ya están usando este sistema.</p>
+      <div class="test-grid-2">
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/Carlos_R.webp?v=1771140032" alt="Carlos R." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Carlos R.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Estaba convencido de que era otro PDF más. Lo abrí a las 11 de la noche en un momento de angustia total — deudas, trabajo, todo junto. La técnica de respiración me calmó en minutos. <strong style="color:#fff; font-style:normal;">La primera noche dormí 6 horas seguidas sin despertar. Algo que no pasaba hace más de 2 años.</strong>"</p>
+          <div class="result-box" style="font-size: 0.85rem;">✅ Resultado: de 4hs de sueño fragmentado a 6hs continuas — en la primera noche.</div>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 Córdoba · Emprendedor, 38 años</p>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/Alejandra_L..webp?v=1771139958" alt="Alejandra L." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Alejandra L.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Trabajo, hijos, la casa — todo cae sobre mí. Llegaba a la noche completamente rota y no podía apagar la cabeza. Abrí el Kit S.O.S. el primer día y lo usé en el baño antes de acostarme. <strong style="color:#fff; font-style:normal;">Dormí de corrido por primera vez en meses. A la semana, mis hijos me preguntaron por qué estaba más tranquila.</strong>"</p>
+          <div class="result-box" style="font-size: 0.85rem;">✅ Resultado: sueño recuperado y presencia real con sus hijos — en 7 días.</div>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 La Plata · Diseñadora y madre, 33 años</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Value Stack + Price -->
+  <section class="value-stack" id="checkout">
+    <div class="container">
+      <p class="text-center" style="font-size:12px; font-weight:900; letter-spacing:2px; color:#aaa; text-transform:uppercase;">Todo lo que recibís</p>
+      <h2 class="text-center" style="font-size: clamp(22px, 5vw, 34px); margin-bottom: 12px; color: #fff;">Tu sistema completo de calma mental</h2>
+      <p class="text-center mb-4" style="color:#555">Cada componente tiene un valor individual. Acá los ves juntos.</p>
+      
+      <div class="accordion mb-4" style="background: #fff; border-radius: 14px; color: #1a1a1a; max-width: 680px; margin: 0 auto; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        <!-- Item 1 -->
+        <div class="acc-item" style="border:none; border-bottom:1px solid #f0f0f0; border-radius:0; background:none; margin:0;">
+          <div class="acc-header" style="padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; flex-direction:column;">
+              <span>📚 Guía Principal "Ya No Puedo Más" <span style="font-size:11px; color:#aaa; margin-left:8px;">▾</span></span>
+              <small style="font-size:10px; color:#888; font-weight:400;">Sistema completo de manejo de ansiedad</small>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+              <span style="font-size:10px; color:#bbb; text-decoration:line-through;">$12.990</span>
+              <span style="background:#e8f5e9; color:#1b4d1b; font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px;">INCLUIDO</span>
+            </div>
+          </div>
+          <div class="acc-content" style="background:#fafafa; border-bottom:1px solid #f0f0f0;"><p style="font-size:12px; padding:15px 20px; color:#555; margin:0;">Guía completa de 40+ páginas. Sistema paso a paso para entender qué dispara tu ansiedad y cómo cortarla desde la raíz. Sin tecnicismos. Lenguaje directo para el hombre que sostiene todo.</p></div>
+        </div>
+        <!-- Item 2 -->
+        <div class="acc-item" style="border:none; border-bottom:1px solid #f0f0f0; border-radius:0; background:#f0faf4; margin:0;">
+          <div class="acc-header" style="padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; flex-direction:column;">
+              <span style="color:#1b4d1b;">⚡ Kit S.O.S. de Emergencia <span style="background:#1b4d1b; color:#fff; font-size:9px; padding:2px 8px; border-radius:10px; margin-left:6px;">+ VALORADO</span> <span style="font-size:11px; color:#aaa; margin-left:8px;">▾</span></span>
+              <small style="font-size:10px; color:#888; font-weight:400;">Técnica 5-4-3-2-1 + respiración + anclajes</small>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+              <span style="font-size:10px; color:#bbb; text-decoration:line-through;">$9.990</span>
+              <span style="background:#e8f5e9; color:#1b4d1b; font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px;">INCLUIDO</span>
+            </div>
+          </div>
+          <div class="acc-content" style="background:#f0faf4; border-bottom:1px solid #f0f0f0;"><p style="font-size:12px; padding:15px 20px; color:#1b4d1b; margin:0;">El más usado. Técnica 5-4-3-2-1 que detiene la crisis en 90 segundos. Protocolo de respiración 4-7-8. 4 ejercicios de anclaje. Tarjeta de bolsillo descargable. Funciona en 3 minutos — incluso a las 3AM.</p></div>
+        </div>
+        <!-- Item 3 -->
+        <div class="acc-item" style="border:none; border-bottom:1px solid #f0f0f0; border-radius:0; background:none; margin:0;">
+          <div class="acc-header" style="padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; flex-direction:column;">
+              <span>🎯 Reto 7 Días de Calma Mental <span style="font-size:11px; color:#aaa; margin-left:8px;">▾</span></span>
+              <small style="font-size:10px; color:#888; font-weight:400;">Ejercicios de 5-15 min para instalar el sistema</small>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+              <span style="font-size:10px; color:#bbb; text-decoration:line-through;">$8.990</span>
+              <span style="background:#e8f5e9; color:#1b4d1b; font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px;">INCLUIDO</span>
+            </div>
+          </div>
+          <div class="acc-content" style="background:#fafafa; border-bottom:1px solid #f0f0f0;"><p style="font-size:12px; padding:15px 20px; color:#555; margin:0;">7 días de ejercicios de 5 a 15 minutos. Día 1: silenciar el ruido. Día 3: liberar tensión acumulada. Día 5: calma bajo presión. Día 7: el sistema queda instalado. Sin experiencia previa.</p></div>
+        </div>
+        <!-- Item 4 -->
+        <div class="acc-item" style="border:none; border-bottom:1px solid #f0f0f0; border-radius:0; background:none; margin:0;">
+          <div class="acc-header" style="padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; flex-direction:column;">
+              <span>🎧 Audio Binaural "Paz en el Presente" <span style="font-size:11px; color:#aaa; margin-left:8px;">▾</span></span>
+              <small style="font-size:10px; color:#888; font-weight:400;">MP3 descargable · frecuencias para el sistema nervioso</small>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+              <span style="font-size:10px; color:#bbb; text-decoration:line-through;">$7.990</span>
+              <span style="background:#e8f5e9; color:#1b4d1b; font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px;">INCLUIDO</span>
+            </div>
+          </div>
+          <div class="acc-content" style="background:#fafafa; border-bottom:1px solid #f0f0f0;"><p style="font-size:12px; padding:15px 20px; color:#555; margin:0;">15 minutos de audio binaural. Frecuencias que calman el sistema nervioso directamente — sin voz, sin instrucciones. Solo ponés los auriculares. MP3 descargable para siempre.</p></div>
+        </div>
+        <!-- Item 5 -->
+        <div class="acc-item" style="border:none; border-bottom:none; border-radius:0; background:#fff8f8; margin:0; border-left:3px solid var(--urgency-red);">
+          <div class="acc-header" style="padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; flex-direction:column;">
+              <span style="color:#cc0000;">🎁 BONO BAR: "5 Frases para Calmar en Crisis" <span style="background:var(--urgency-red); color:#fff; font-size:9px; padding:2px 8px; border-radius:10px; margin-left:6px;">SOLO HOY</span> <span style="font-size:11px; color:#aaa; margin-left:8px;">▾</span></span>
+              <small style="font-size:10px; color:#888; font-weight:400;">Guía PDF para ayudar a alguien en plena crisis</small>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+              <span style="font-size:10px; color:#bbb; text-decoration:line-through;">$6.990</span>
+              <span style="background:#fff0f0; color:#cc0000; font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px;">SOLO HOY</span>
+            </div>
+          </div>
+          <div class="acc-content" style="background:#fff8f8;"><p style="font-size:12px; padding:15px 20px; color:#993333; margin:0;">Guía PDF para usar con tu pareja, hijo o amigo en plena crisis. 5 frases exactas que funcionan — y las 5 que empeoran todo. Para el hombre que no sabe qué decir cuando alguien explota.</p></div>
+        </div>
+      </div>
+
+      <div class="total-bar" style="background:#1b4d1b; border:none; padding:15px 20px; color:#fff; border-radius: 8px; font-size: 1.2rem; display:flex; justify-content:space-between; max-width:680px; margin:0 auto 30px;">
+        <span style="font-weight:700; font-size:0.9rem;">Valor total real:</span>
+        <span style="color:var(--neon-green); font-size:1.5rem; font-weight:900;">$46.950 ARS</span>
+      </div>
+
+      <div class="price-block text-center mt-4" style="background:#fff; border-radius:16px; padding:28px 20px; max-width:560px; margin:0 auto;">
+        <span style="font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:2px; color:#888; display:block; margin-bottom:6px;">Tu precio hoy</span>
+        <div style="font-size:18px; color:var(--urgency-red); font-weight:700; text-decoration:line-through;">$46.950 ARS <small style="font-size:11px; text-decoration:none; color:#aaa;">valor total</small></div>
+        <div style="font-size:15px; color:var(--urgency-red); font-weight:700; text-decoration:line-through;">$29.990 ARS <small style="font-size:11px; text-decoration:none; color:#aaa;">precio regular</small></div>
+        <div style="margin:10px 0;"><span style="font-size:24px; font-weight:900; color:#1b4d1b; vertical-align:top; margin-top:8px; display:inline-block;">$</span><span style="font-size:54px; font-weight:900; color:#1b4d1b; line-height:1;">14.990</span><span style="font-size:18px; font-weight:700; color:#777; margin-left:4px;">ARS</span></div>
+        <span style="background:var(--urgency-red); color:#fff; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:900; display:inline-block; margin-bottom:12px;">50% OFF · Por tiempo limitado</span>
+        <p style="font-size:12px; color:#666; margin-bottom:20px; line-height:1.5;">Lo mismo que <em>una sola consulta con psicólogo</em> — pero disponible para siempre, sin turnos ni renovaciones.</p>
+        
+        <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none;font-size:16px;padding:18px 24px;width:100%;max-width:460px;">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+        
+        <div class="trust-row mt-4" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+          <div style="background:#f5f5f5; border-radius:10px; padding:10px 8px; font-size:10px; color:#555; line-height:1.5; font-weight:600;"><span style="font-size:18px; display:block; margin-bottom:4px;">⚡</span><strong>Acceso Inmediato</strong><br>en tu email al instante</div>
+          <div style="background:#f5f5f5; border-radius:10px; padding:10px 8px; font-size:10px; color:#555; line-height:1.5; font-weight:600;"><span style="font-size:18px; display:block; margin-bottom:4px;">🛡️</span><strong>Garantía 7 Días</strong><br>100% devolución</div>
+          <div style="background:#f5f5f5; border-radius:10px; padding:10px 8px; font-size:10px; color:#555; line-height:1.5; font-weight:600;"><span style="font-size:18px; display:block; margin-bottom:4px;">🔒</span><strong>Pago Seguro</strong><br>vía Mercado Pago</div>
+        </div>
+        
+        <div style="background:#0f3f0f; border-radius:12px; padding:16px 20px; margin-top:16px; color:#fff; text-align:left; display:flex; align-items:center; gap:16px;">
+          <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/garantia_especial_-_7_dias.webp?v=1773638248" alt="Garantía" style="width:70px; height:70px;">
+          <div>
+            <h4 style="font-size:14px; margin-bottom:4px; font-weight:900; line-height: 1.2;">Funciona en 3 minutos — o te devolvemos todo</h4>
+            <p style="font-size:11px; opacity:0.9; color:#fff; padding:0; line-height: 1.5;">7 días de garantía total. Sin preguntas. Sin burocracia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Bonuses -->
+  <section class="bonus-cards">
+    <div class="container">
+      <h2 class="text-center mb-4">🎁 INCLUIDO EN TU COMPRA — Sin pagar nada extra</h2>
+      <div class="bonus-card">
+        <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/kit-sos-ansiedad-tablet-smartphone-dispositivos.webp?v=1770592454" alt="Kit S.O.S." class="bonus-img" style="object-fit:cover;">
+        <div class="bonus-text">
+          <div style="font-size:12px;text-transform:uppercase;color:var(--neon-green);font-weight:900;margin-bottom:5px;">El más valorado</div>
+          <h3 class="mb-2">⚡ Kit S.O.S. de Emergencia</h3>
+          <p>Técnica 5-4-3-2-1, respiración 4-7-8 y 4 ejercicios de anclaje para cortar una crisis en 90 segundos. Incluye tarjeta de bolsillo descargable.</p>
+          <div style="text-decoration:line-through;color:var(--urgency-red);margin-top:10px;font-weight:bold;">Valor individual: $9.990 ARS</div>
+        </div>
+      </div>
+      <div class="bonus-card">
+        <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/reto-7-dias-calma-mental-detox-digital.webp?v=1770592300" alt="Reto 7 Días" class="bonus-img" style="object-fit:cover;">
+        <div class="bonus-text">
+          <div style="font-size:12px;text-transform:uppercase;color:var(--neon-green);font-weight:900;margin-bottom:5px;">Sistema progresivo</div>
+          <h3 class="mb-2">🎯 Reto 7 Días de Calma Mental</h3>
+          <p>7 días con ejercicios de 5 a 15 minutos: silenciar el ruido interno, liberar tensión, calma bajo presión. Sin experiencia previa. Al día 7, el sistema está instalado.</p>
+          <div style="text-decoration:line-through;color:var(--urgency-red);margin-top:10px;font-weight:bold;">Valor individual: $8.990 ARS</div>
+        </div>
+      </div>
+      <div class="bonus-card">
+        <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/meditacion-guiada-paz-presente-audio-premium-_Editada_r2-convertido-de-webp.webp?v=1770592503" alt="Audio Binaural" class="bonus-img" style="object-fit:cover;">
+        <div class="bonus-text">
+          <div style="font-size:12px;text-transform:uppercase;color:var(--neon-green);font-weight:900;margin-bottom:5px;">Calma inmediata</div>
+          <h3 class="mb-2">🎧 Audio Binaural "Paz en el Presente"</h3>
+          <p>Poné los auriculares y dejá que las frecuencias binaurales calmen tu sistema nervioso. Sin voz, sin instrucciones. 15 minutos. MP3 descargable para siempre.</p>
+          <div style="text-decoration:line-through;color:var(--urgency-red);margin-top:10px;font-weight:bold;">Valor individual: $7.990 ARS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Urgency Bonus Bar -->
+  <section class="urgency-bonus">
+    <div class="container" style="max-width:680px">
+      <span style="background:#ff4444;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;padding:5px 16px;border-radius:20px;display:inline-block;margin-bottom:14px">⚠️ Bono de Acción Rápida — Solo Hoy</span>
+      <h2 style="color:#fff;font-size:clamp(18px,4vw,24px);margin-bottom:8px">Si comprás en las próximas horas,<br>te incluyo esto extra.</h2>
+      <p style="color:#ffaaaa;font-size:13px;margin-bottom:18px"><strong style="color:#fff">Guía PDF: "5 Frases para Calmar a Alguien en Crisis"</strong><br>Para ayudar a un familiar, pareja o amigo exactamente cuando lo necesita. Valorada en $6.990 ARS / U$D 5.</p>
+      <div style="background:rgba(0,0,0,.45);border-radius:12px;padding:10px 20px;margin-bottom:18px;display:inline-block">
+        <div style="font-size:10px;color:#ff8888;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px">Este bono desaparece en:</div>
+        <div class="countdown-val" style="font-size:30px;font-weight:900;color:#fff;letter-spacing:4px;font-family:monospace">23:59:59</div>
+      </div>
+      <br>
+      <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-red urgent-btn" style="color:#fff;font-weight:900;text-decoration:none;max-width:400px;margin:0 auto 8px;display:inline-flex">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+      <p style="color:#ff8888;font-size:11px;margin-top:8px">🔒 Pago seguro · Garantía 7 días · Acceso inmediato</p>
+    </div>
+  </section>
+
+  <!-- 14. More Testimonials -->
+  <section class="testimonials-more bg-dark">
+    <div class="container">
+      <p class="text-center" style="font-size:12px; font-weight:900; letter-spacing:2px; color:var(--neon-green); text-transform:uppercase;">Historias reales</p>
+      <h2 class="text-center mb-4">Personas que recuperaron su paz mental</h2>
+      <div class="test-grid-2">
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/superacion-ansiedad-vida-cotidiana-testimonio.webp?v=1770592796" alt="Martín G." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Martín G.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"El audio binaural lo escucho con auriculares en el subte. Nadie sabe lo que estoy haciendo y <strong style="color:#fff; font-style:normal;">yo llego al trabajo en otro estado mental.</strong>"</p>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 CABA · Contador, 41 años</p>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/testimonio-usuario-pack-ansiedad-real.webp?v=1770592233" alt="Carlos T." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Carlos T.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Probé apps de meditación y no me enganchaban. Esto es distinto porque no te pide que te conviertas en otra persona. <strong style="color:#fff; font-style:normal;">Son herramientas para el momento exacto en que la cabeza explota.</strong>"</p>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 Mendoza · Docente, 36 años</p>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/testimonial-avatar.webp?v=1771387685" alt="Camila S." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Camila S.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Tenía crisis de ansiedad antes de cada reunión importante. Gracias al Reto de 7 días aprendí a reconocer cuándo se dispara y cómo cortarla. <strong style="color:#fff; font-style:normal;">Ya no cancelo compromisos por el miedo.</strong>"</p>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 Rosario · Empleada administrativa, 29 años</p>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/mariana.webp?v=1770603424" alt="Mariana G." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Mariana G.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Trabajo 10 horas por día y cuando llegaba a casa no podía desconectarme. El Kit S.O.S. lo uso 3 minutos antes de cenar con mis hijos. <strong style="color:#fff; font-style:normal;">Salgo siendo otra persona. Lo uso todos los días.</strong>"</p>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 Buenos Aires · Madre y profesional, 38 años</p>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/Diego_M..webp?v=1771387061" alt="Diego M." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Diego M.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Tengo dos hijos, una hipoteca y un negocio que sostener. Uso esto en el auto antes de entrar a casa — 5 minutos. <strong style="color:#fff; font-style:normal;">La semana pasada mi hijo de 9 años me preguntó si estaba contento. Nunca me lo había preguntado.</strong>"</p>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 Rosario · Comerciante, 44 años</p>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/Carlos_R.webp?v=1771140032" alt="Roberto P." class="avatar" style="object-fit:cover;">
+            <div>
+              <div class="black-900">Roberto P.</div>
+              <div class="stars">⭐⭐⭐⭐⭐</div>
+              <div style="font-size: 0.75rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 8px; font-weight: 900; display: inline-block; margin-top: 5px;">✓ Compra Verificada</div>
+            </div>
+          </div>
+          <p style="font-style: italic; color: #ddd; font-size: 0.95rem;">"Tenía el pelo cayéndose a porciones. El médico me habló de ansiedad crónica. Dos semanas usando este sistema y ya noto la diferencia en cómo duermo. <strong style="color:#fff; font-style:normal;">El cuerpo responde cuando la cabeza descansa.</strong>"</p>
+          <p style="color:#666; font-size:0.8rem; margin-top:10px;">📍 Mendoza · Comerciante, 47 años</p>
+        </div>
+      </div>
+      <div class="text-center" style="margin-top: 30px;">
+        <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. Author Section -->
+  <section class="author-section bg-white" style="color: #1a1a1a; padding: 60px 0;">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:20px">
+        <p style="font-size:12px; font-weight:900; letter-spacing:2px; color:#aaa; text-transform:uppercase;">¿Quién lo creó?</p>
+        <h2 style="font-size: clamp(22px, 4vw, 30px); margin-bottom: 12px; color: #1a1a1a;">El sistema nació de la experiencia propia</h2>
+      </div>
+      <div style="background:linear-gradient(135deg,#f5f5f5,#e8f5e9); border-radius:20px; padding:28px 20px; display:flex; flex-wrap:wrap; gap:28px; align-items:center;">
+        <div style="flex:0 0 auto; text-align:center; margin:0 auto;">
+          <img src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/gustavo-grageda-especialista-ansiedad-argentina.webp?v=1771388499" alt="Gustavo Grageda" style="width:200px; height:200px; object-fit:cover; border-radius:50%; border:4px solid var(--neon-green); display:block; margin:0 auto;">
+          <div style="background:#111; color:#bbb; padding:10px 14px; border-radius:10px; margin-top:12px; font-size:11px; line-height:1.7; text-align:center;">Especialista en Manejo de Ansiedad<br>2,450+ Personas Ayudadas<br>Autor de "Ya No Puedo Más"</div>
+        </div>
+        <div style="flex:1; min-width:260px; text-align:left;">
+          <h3 style="color:var(--neon-green); font-size:clamp(20px,4vw,26px); font-weight:900; margin-bottom:12px; background:#111; display:inline-block; padding:2px 10px; border-radius:6px;">Hola, soy Gustavo</h3>
+          <p style="font-size:15px; color:#333; line-height:1.7; margin-bottom:10px;">Yo también fui ese hombre que sostiene todo por fuera y no puede apagar la cabeza por dentro. <strong>Trabajo, familia, deudas, incertidumbre — todo junto, todo el tiempo.</strong></p>
+          <p style="font-size:15px; color:#333; line-height:1.7; margin-bottom:10px;">Probé de todo: terapia, meditación, apps, podcasts. Funcionaban cuando ya estaba tranquilo. Pero nadie tenía algo para el momento exacto de crisis.</p>
+          <p style="color:#1b4d1b; font-weight:800; font-size:15px; line-height:1.6;">Mi misión es darte la <strong>herramienta que yo mismo necesité</strong>: algo que funciona en 3 minutos, en el peor momento, sin que nadie más tenga que saberlo.</p>
+          <p style="margin-top:12px; font-size:13px; color:#666; font-style:italic;">— Gustavo Grageda</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. Emotional Urgency -->
+  <section class="emotional-urgency bg-dark">
+    <div class="container">
+      <div style="background:linear-gradient(135deg,var(--bg-dark),#111); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:36px 24px; text-align:center; max-width:700px; margin:0 auto;">
+        <p style="color:#555; font-size:12px; margin-bottom:10px;">Una pregunta antes de irte...</p>
+        <h2 style="color:#fff; font-size:clamp(20px,5vw,30px); font-weight:900; line-height:1.3; margin-bottom:14px;">¿Cuántas noches más vas a sostener todo solo, sin una herramienta?</h2>
+        <p style="color:#aaa; font-size:14px; line-height:1.6; margin-bottom:16px; max-width:560px; margin-left:auto; margin-right:auto;">Cada noche sin dormir bien no es solo cansancio. Es un precio concreto que pagás al día siguiente:</p>
+        
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; max-width:600px; margin:0 auto 24px;">
+          <div style="background:rgba(255,68,68,.07); border:1px solid rgba(255,68,68,.2); border-radius:10px; padding:15px; text-align:center;">
+            <span style="font-size:24px; display:block; margin-bottom:6px;">👨‍👩‍👧</span>
+            <span style="font-size:12px; color:#ffaaaa; line-height:1.4; font-weight:600;">Menos paciencia con tus hijos — y lo sabés</span>
+          </div>
+          <div style="background:rgba(255,68,68,.07); border:1px solid rgba(255,68,68,.2); border-radius:10px; padding:15px; text-align:center;">
+            <span style="font-size:24px; display:block; margin-bottom:6px;">💼</span>
+            <span style="font-size:12px; color:#ffaaaa; line-height:1.4; font-weight:600;">Menos energía en el trabajo — y se nota</span>
+          </div>
+          <div style="background:rgba(255,68,68,.07); border:1px solid rgba(255,68,68,.2); border-radius:10px; padding:15px; text-align:center;">
+            <span style="font-size:24px; display:block; margin-bottom:6px;">😷</span>
+            <span style="font-size:12px; color:#ffaaaa; line-height:1.4; font-weight:600;">El mismo loop de 3AM — otra vez mañana</span>
+          </div>
+        </div>
+
+        <p style="color:#888; font-size:13px; margin-bottom:24px; line-height:1.6;">No tenés que vivir así. Y no tenés que resolverlo solo con fuerza de voluntad. Hay una herramienta. Ya la usaron 2.450 personas. Está a un clic.</p>
+        
+        <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none;max-width:420px;margin:0 auto;display:flex;">⚡ RECUPERAR MI PAZ MENTAL — $14.990</a>
+        <p style="color:#444; font-size:11px; margin-top:10px;">Acceso inmediato · Garantía 7 días · Pago seguro</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. FAQ -->
+  <section class="faq bg-dark">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:28px">
+        <p style="font-size:12px; font-weight:900; letter-spacing:2px; color:var(--neon-green); text-transform:uppercase;">Preguntas frecuentes</p>
+        <h2 class="text-center mb-4">Todo lo que necesitás saber</h2>
+      </div>
+      <div class="accordion" style="max-width:860px; margin:0 auto;">
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Esto funciona si nunca probé nada para la ansiedad? <span>+</span></div>
+          <div class="acc-content"><p>Sí, y es ideal para empezar. Fue diseñado para personas sin experiencia previa. No necesitás saber meditar ni tener práctica con respiración. Las instrucciones son claras y aplicables al instante.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Y si ya probé otros métodos y no me funcionaron? <span>+</span></div>
+          <div class="acc-content"><p>La diferencia es que la mayoría de los métodos están diseñados para momentos de calma, no de crisis. Este sistema fue creado específicamente para el momento exacto en que la ansiedad ya está disparada — a las 3AM, sin energía, sin paciencia.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Cuánto tiempo por día necesito? <span>+</span></div>
+          <div class="acc-content"><p>El Kit S.O.S. funciona en 3 minutos. El Reto de 7 Días requiere entre 5 y 15 minutos por día. El audio binaural dura 15 minutos. No hay compromisos de horario ni rutinas complicadas.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Cómo recibo el pack? ¿Cuándo llega? <span>+</span></div>
+          <div class="acc-content"><p>Es 100% digital. Después del pago recibís un email con los links de descarga en segundos. No hay envío, no esperás nada. Está disponible en tu celular o computadora al instante.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Qué pasa si no me funciona? <span>+</span></div>
+          <div class="acc-content"><p>Tenés 7 días de garantía total. Si probás el sistema y no notás ningún cambio, te devolvemos el 100% de tu dinero sin preguntas. El riesgo es completamente nuestro, no tuyo.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Por qué $14.990 y no menos? <span>+</span></div>
+          <div class="acc-content"><p>Una sola sesión con psicólogo en Argentina cuesta entre $15.000 y $30.000 ARS — y no te la llevás para siempre. Este sistema completo cuesta menos que una consulta y lo usás toda la vida, cuantas veces lo necesités, sin renovaciones.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Es un PDF aburrido o algo que realmente voy a usar? <span>+</span></div>
+          <div class="acc-content"><p>Es un sistema práctico con instrucciones paso a paso, técnicas numeradas y una tarjeta de bolsillo imprimible. Está diseñado para usarse en el peor momento — cuando no tenés energía para leer páginas y páginas de teoría.</p></div>
+        </div>
+        <div class="acc-item faq-item" style="background:rgba(255,255,255,.04); border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.08);">
+          <div class="acc-header" style="color:var(--neon-green); font-size:15px; font-weight:900;">¿Tengo que contárselo a alguien para que funcione? <span>+</span></div>
+          <div class="acc-content"><p>Para nada. Este sistema funciona en silencio — lo usás solo, cuando lo necesitás, sin que nadie más tenga que saberlo. No requiere apoyo externo ni cambios visibles en tu rutina.</p></div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:36px;padding:0 16px">
+        <h3 style="color:var(--neon-green);font-size:clamp(18px,4vw,22px);font-weight:900;margin-bottom:12px;line-height:1.3">Ya sabés todo lo que necesitás saber.<br>Solo falta dar el paso.</h3>
+        <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none;max-width:360px;margin:0 auto;display:flex;">⚡ EMPEZAR AHORA — $14.990 ARS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. Final Close -->
+  <section class="final-close bg-white" style="color:#1a1a1a;">
+    <div class="container" style="text-align:center;">
+      <p style="font-size:12px; font-weight:900; letter-spacing:2px; color:#888; text-transform:uppercase;">Tu sistema completo</p>
+      <h2 class="section-title dark" style="margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto;font-size:clamp(22px,4vw,30px);">Todo lo que recibís hoy, en un solo lugar.</h2>
+      
+      <img loading="lazy" src="https://cdn.shopify.com/s/files/1/0978/4895/1060/files/mockup_ya_no_puedo_mas.webp?v=1771143133" alt="Pack Digital Ya No Puedo Más" style="width:100%;max-width:480px;height:auto;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.1);margin-bottom:28px;display:block;margin-left:auto;margin-right:auto;">
+      
+      <div style="background:#fff; border-radius:14px; padding:22px 20px; max-width:480px; margin:0 auto 24px; border: 1px solid #eee; box-shadow:0 4px 15px rgba(0,0,0,.05); text-align:left;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;font-weight:600;color:#1a1a1a;"><span style="color:#1b4d1b;font-size:16px;">✓</span>Guía Principal "Ya No Puedo Más"</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;font-weight:600;color:#1a1a1a;"><span style="color:#1b4d1b;font-size:16px;">✓</span>Kit S.O.S. de Emergencia (técnica 5-4-3-2-1)</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;font-weight:600;color:#1a1a1a;"><span style="color:#1b4d1b;font-size:16px;">✓</span>Reto 7 Días de Calma Mental</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;font-weight:600;color:#1a1a1a;"><span style="color:#1b4d1b;font-size:16px;">✓</span>Audio Binaural "Paz en el Presente"</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;font-weight:600;color:#cc0000;background:#fff8f8;padding:8px 10px;border-radius:8px;border-left:3px solid var(--urgency-red);"><span>🎁</span>BONO BAR: "5 Frases para Calmar en Crisis" <span style="font-weight:400;color:#888;font-size:11px;">(solo hoy)</span></div>
+        
+        <div style="border-top:1px solid #f0f0f0;margin-top:14px;padding-top:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;color:#bbb;text-decoration:line-through;">Valor total: $46.950 ARS</div><div style="font-size:26px;font-weight:900;color:#1b4d1b;">$14.990 ARS</div></div>
+          <span style="background:var(--urgency-red);color:#fff;padding:4px 12px;border-radius:16px;font-size:11px;font-weight:900;">50% OFF</span>
+        </div>
+      </div>
+      
+      <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none;max-width:460px;margin:0 auto;display:flex;">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990</a>
+      <p style="color:#888;font-size:11px;margin-top:10px;">Acceso inmediato · Garantía 7 días · Pago seguro</p>
+    </div>
+  </section>
+
+  <!-- 19. Sticky Bottom CTA -->
+  <div class="sticky-cta">
+    <div class="sticky-content">
+      <span class="sticky-badge">14.990 ARS / 10 USD</span>
+      <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+    </div>
+  </div>
+
+  <!-- Exit Intent Modal -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-close">×</div>
+      <h2 class="text-red mb-2">¡ESPERÁ! ÚLTIMO REGALO</h2>
+      <p class="mb-4">No te vayas con las manos vacías. Porque llegaste hasta acá, tenés el <strong>acceso prioritario</strong> reservado por 10 minutos.</p>
+      <a onclick="return false;" href="https://pay.hotmart.com/A105020975H?checkoutMode=2" class="hotmart-fb hotmart__button-checkout btn btn-green urgent-btn" style="color:#000;font-weight:900;text-decoration:none;display:block;width:100%;">⚡ SÍ, QUIERO EL SISTEMA COMPLETO — $14.990 ARS</a>
+    </div>
+  </div>
+
+  <script>
+    // Modals & Timers
+    const TIMER_KEY = "ya_no_puedo_mas_timer";
+    let endTime = localStorage.getItem(TIMER_KEY);
+    if (!endTime) {
+      endTime = Date.now() + 24 * 60 * 60 * 1000;
+      localStorage.setItem(TIMER_KEY, endTime);
+    } else {
+      endTime = parseInt(endTime);
+    }
+
+    function updateCountdowns() {
+      const now = Date.now();
+      let diff = endTime - now;
+      if (diff < 0) diff = 0;
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      const formatted = String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0') + ":" + String(s).padStart(2, '0');
+      document.querySelectorAll('.countdown-val').forEach(el => el.textContent = formatted);
+      if (diff > 0) requestAnimationFrame(updateCountdowns);
+    }
+    updateCountdowns();
+
+    // Accordions
+    document.querySelectorAll('.acc-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const content = item.querySelector('.acc-content');
+        if (item.closest('.value-stack')) {
+          item.closest('.accordion').querySelectorAll('.acc-item').forEach(otherItem => {
+            if (otherItem !== item) otherItem.querySelector('.acc-content').style.maxHeight = null;
+          });
+        }
+        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+      });
+    });
+
+    // Scroll Behaviors
+    const heroSection = document.querySelector('.hero');
+    const topUrgency = document.querySelector('.top-urgency-bar');
+    const stickyCta = document.querySelector('.sticky-cta');
+    window.addEventListener('scroll', () => {
+      const heroBottom = heroSection.getBoundingClientRect().bottom;
+      if (heroBottom < 0) {
+        topUrgency.classList.add('visible');
+        stickyCta.classList.add('visible');
+      } else {
+        topUrgency.classList.remove('visible');
+        stickyCta.classList.remove('visible');
+      }
+    });
+
+    // Smooth Scroll anchor
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        if(this.classList.contains('hotmart-fb')) return;
+        e.preventDefault();
+        const t = document.querySelector(this.getAttribute('href'));
+        if(t) t.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Exit Intent
+    let hasWaited = false;
+    setTimeout(() => { hasWaited = true; }, 60000);
+    const modal = document.querySelector('.modal-overlay');
+    function triggerExit() {
+      if (hasWaited && !localStorage.getItem('exit_intent_shown')) {
+        modal.classList.add('active');
+        localStorage.setItem('exit_intent_shown', 'true');
+      }
+    }
+    document.addEventListener('mouseleave', (e) => { if (e.clientY <= 0) triggerExit(); });
+    let tOut; document.addEventListener('touchstart', () => { clearTimeout(tOut); tOut = setTimeout(triggerExit, 60000); });
+    tOut = setTimeout(triggerExit, 60000);
+    document.querySelector('.modal-close').addEventListener('click', () => modal.classList.remove('active'));
+
+    // Init Accordion
+    setTimeout(() => {
+      const firstAcc = document.querySelector('.value-stack .acc-content');
+      if (firstAcc) firstAcc.style.maxHeight = firstAcc.scrollHeight + "px";
+    }, 100);
+  </script>
+</body>
+</html>
