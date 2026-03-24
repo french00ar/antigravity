@@ -1,0 +1,23 @@
+{
+  "name": "antigravity",
+  "version": "1.0.0",
+  "description": "Pack Digital para Gestionar la Ansiedad - NEON DIGITAL",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/french00ar/antigravity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/french00ar/antigravity/issues"
+  },
+  "homepage": "https://github.com/french00ar/antigravity#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
